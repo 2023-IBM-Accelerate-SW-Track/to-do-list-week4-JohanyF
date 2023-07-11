@@ -7,13 +7,13 @@ const fs = require("fs").promises;
 
 app.use(cors());
 app.use(bodyParser.json({ extended: true}));
-app.listen(port, () => console.log("Backend server line on" + port));
+app.listen(port, () => console.log("Backend server line on " + port));
 
 app.get("/", (req, res) => {
-    res.send({ message: "Connected to Backend server!"});
+    res.send({ message: "Connected to Backend server!" });
 });
 
-app.post("add/item", addItem)
+app.post("/add/item", addItem)
 
 async function addItem (request, response) {
     try {
@@ -23,17 +23,17 @@ async function addItem (request, response) {
         const curDate = request.body.jsonObject.currentDate
         const dueDate = request.body.jsonObject.dueDate
         const newTask = {
-            ID: id,
-            Task: task,
-            Current_date: curDate,
-            Due_date: dueDate
+          ID: id,
+          Task: task,
+          Current_date: curDate,
+          Due_date: dueDate
         }
 
         const data = await fs.readFile("database.json");
         const json = JSON.parse(data);
         json.push(newTask);
         await fs.writeFile("database.json", JSON.stringify(json))
-        console.log('Successfully wrote to file')
+        console.log('Successfully wrote to file') 
         response.sendStatus(200)
     } catch (err) {
         console.log("error: ", err)
